@@ -69,7 +69,7 @@ const App = () => {
                         <Text className="text-black font-['Urbanist-Bold']">
                             Already have an account?{' '}
                         </Text>
-                        <TouchableOpacity onPress={() => router.push('/(auth)/sign-in')}>
+                        <TouchableOpacity onPress={() => router.push('/(auth)/sign-up')}>
                             <Text className="text-[#FB2355] font-['Urbanist-Bold']">
                                 Login Now
                             </Text>
