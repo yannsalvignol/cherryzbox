@@ -26,7 +26,7 @@ export default function Loading() {
       <SafeAreaView className="flex-1">
         <View className="w-full justify-center items-center h-full px-4">
           <Text className="text-white font-questrial text-5xl mt-[335px]">    
-            Cherryzbox
+            Cherrizbox
           </Text>
         </View>
       </SafeAreaView>
