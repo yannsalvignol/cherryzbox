@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Link, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormField from './components/FormField';
-
-
+import { createUser } from '../lib/appwrite';
 
 const App = () => {
     const router = useRouter();
@@ -16,6 +15,28 @@ const App = () => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const submit = async () => {
+        if (form.password !== form.confirm_password) {
+            Alert.alert('Error', 'Passwords do not match');
+            return;
+        }
+        if(!form.username || !form.email || !form.password || !form.confirm_password) {
+            Alert.alert('Error', 'Please fill all the fields');
+            return;
+        }
+        try {
+            setIsSubmitting(true);
+            await createUser(form.email, form.password, form.username);
+            router.replace('/(tabs)/home');
+        } catch (error) {
+            console.error('Registration error:', error);
+            Alert.alert('Error', error.message);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -46,10 +67,11 @@ const App = () => {
                     />
                     <TouchableOpacity 
                         className="w-full bg-[#FB2355] py-4 rounded-lg mt-7"
-                        onPress={() => {}}
+                        onPress={submit}
+                        disabled={isSubmitting}
                     >
                         <Text className="text-white text-center font-['Urbanist-Bold'] text-lg">
-                            Register
+                            {isSubmitting ? 'Signing up...' : 'Register'}
                         </Text>
                     </TouchableOpacity>
 
