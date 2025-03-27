@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { Link, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormField from '../components/FormField';
+import { SignIn } from '../../lib/appwrite';
 
 const SignUp = () => {
     const router = useRouter();
@@ -10,6 +11,25 @@ const SignUp = () => {
         email: '',
         password: '',
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const submit = async () => {
+        if (!form.email || !form.password) {
+            Alert.alert('Error', 'Please fill in all fields');
+            return;
+        }
+
+        try {
+            setIsSubmitting(true);
+            await SignIn(form.email, form.password);
+            router.replace('/(tabs)/home');
+        } catch (error) {
+            console.error('Login error:', error);
+            Alert.alert('Error', error.message);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -18,21 +38,31 @@ const SignUp = () => {
                     <Text className="text-black font-['Urbanist-Bold'] text-4xl mt-[50px]">    
                         Welcome back! Glad to see you, Again!
                     </Text>
-                    <FormField title="Email" value={form.email} handleChangeText={(e) => setForm({...form, email: e})} otherStyles="mt-7" keyboardType="email-address" />
-                    <FormField title="Password" value={form.password} handleChangeText={(e) => setForm({...form, password: e})} otherStyles="mt-7" />
+                    <Text className="text-gray-500 font-['Urbanist-Bold'] text-lg mt-2">
+                        Don't worry! It occurs. Please enter the email address linked with your account.
+                    </Text>
                     
-                    <TouchableOpacity className="self-end mt-2" onPress={() => router.push('/(auth)/forgot-password')}>
-                        <Text className="text-[#FB2355] font-['Urbanist-Bold']">
-                            Forgot password?
-                        </Text>
-                    </TouchableOpacity>
+                    <FormField 
+                        title="Email" 
+                        value={form.email} 
+                        handleChangeText={(e) => setForm({...form, email: e})} 
+                        otherStyles="mt-7" 
+                        keyboardType="email-address" 
+                    />
+                    <FormField 
+                        title="Password" 
+                        value={form.password} 
+                        handleChangeText={(e) => setForm({...form, password: e})} 
+                        otherStyles="mt-7" 
+                    />
                     
                     <TouchableOpacity 
                         className="w-full bg-[#FB2355] py-4 rounded-lg mt-7"
-                        onPress={() => {}}
+                        onPress={submit}
+                        disabled={isSubmitting}
                     >
                         <Text className="text-white text-center font-['Urbanist-Bold'] text-lg">
-                            Login
+                            {isSubmitting ? 'Signing in...' : 'Login'}
                         </Text>
                     </TouchableOpacity>
 
