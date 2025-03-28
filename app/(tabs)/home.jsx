@@ -1,17 +1,38 @@
-import { Text, View, FlatList, TouchableOpacity, Image } from 'react-native';
-import React, { useState } from 'react';
+import { Text, View, FlatList, TouchableOpacity, Image, Keyboard, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchInput from '../components/SearchInput';
+import Trending from '../components/trending';
 import { useRouter } from 'expo-router';
 
 export default function Home() {
   const router = useRouter();
   const [searchResults, setSearchResults] = useState([{id: 1}, {id: 2}, {id: 3}]);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  
+  // Add keyboard listener to dismiss trending when keyboard is dismissed
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setIsSearchFocused(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   
   const handleSearch = (query) => {
     // In a real app, this would filter your data based on the query
     console.log('Searching for:', query);
     // For demonstration, we're just keeping the data the same
+  };
+  
+  const handleSearchFocus = (focused) => {
+    console.log('Search focus changed to:', focused);
+    setIsSearchFocused(focused);
   };
   
   return (
@@ -36,20 +57,50 @@ export default function Home() {
         </TouchableOpacity>
       </View>
       
-      <FlatList
-        data={searchResults}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
-          <View className="px-4 py-2 bg-[#1A1A1A] rounded-lg mx-4 mb-3">
-            <Text className="font-['Urbanist-Regular'] text-white">Video {item.id}</Text>
+      {/* Search input */}
+      <View className='px-4 mb-4'>
+        <SearchInput onSearch={handleSearch} onFocus={handleSearchFocus} />
+      </View>
+      
+      {/* Content */}
+      <ScrollView>
+        {/* Trending section - always visible when search is focused */}
+        {isSearchFocused && (
+          <View className="px-4 mb-4">
+            <Text className="text-white font-['Urbanist-Bold'] text-lg mb-3">Trending</Text>
+            
+            <View className="flex-row flex-wrap">
+              {["Podcast", "Business", "Sports", "Music", "Beauty", 
+                "Mum", "Education", "Inspiration", "Fun", "Games"].map((topic, index) => (
+                <TouchableOpacity 
+                  key={index}
+                  className="bg-[#1A1A1A] py-2 px-4 rounded-full mr-2 mb-3"
+                >
+                  <Text className="text-white font-['Urbanist-Regular']">{topic}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         )}
-        ListHeaderComponent={() => (
-          <View className='px-4 mb-6'>
-            <SearchInput onSearch={handleSearch} />
-          </View>
-        )}
-      />
+        
+        {/* Videos section */}
+        <View className="px-4 mb-4">
+          <Text className="text-white font-['Urbanist-Bold'] text-lg mb-3">
+            {isSearchFocused ? 'Search Results' : 'For You'}
+          </Text>
+          
+          {searchResults.map(item => (
+            <View 
+              key={item.id.toString()} 
+              className="bg-[#1A1A1A] rounded-lg mb-3 p-4"
+            >
+              <Text className="font-['Urbanist-Regular'] text-white">
+                Video {item.id}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
