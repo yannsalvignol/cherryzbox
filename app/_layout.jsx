@@ -3,7 +3,7 @@ import { SplashScreen, Stack, Redirect } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import { NativeWindStyleSheet } from "nativewind";
-
+import GlobalProvider from '../context/GlobalProvider';
 // Force NativeWind to use native styling on web
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -29,7 +29,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <GlobalProvider>
       <Stack 
         screenOptions={{ 
           headerShown: false,
@@ -49,8 +49,15 @@ export default function RootLayout() {
             gestureEnabled: false
           }}
         />
+        <Stack.Screen 
+          name="(tabs)"
+          options={{
+            headerShown: false,
+            gestureEnabled: false
+          }}
+        />
       </Stack>
       <Redirect href="/_loading" />
-    </>
+    </GlobalProvider>
   );
 }

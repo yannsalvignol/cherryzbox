@@ -1,11 +1,15 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
-import React, { useState } from 'react';
-import { Link, useRouter } from 'expo-router';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Link, useRouter, Redirect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormField from './components/FormField';
 import { createUser } from '../lib/appwrite';
-
+import { GlobalContext } from '../context/GlobalProvider';
 const App = () => {
+
+    const {isLoading, isLoggedIn } = useContext(GlobalContext);
+    if (!isLoading && isLoggedIn) {return <Redirect href="/(tabs)/home" />}
+
     const router = useRouter();
     const [form, setForm] = useState({
         email: '',

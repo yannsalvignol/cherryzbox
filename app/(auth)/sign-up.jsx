@@ -57,6 +57,15 @@ const SignUp = () => {
                     />
                     
                     <TouchableOpacity 
+                        className="self-end mt-2"
+                        onPress={() => router.push('/(auth)/forgot-password')}
+                    >
+                        <Text className="text-[#FB2355] font-['Urbanist-Bold']">
+                            Forgot Password?
+                        </Text>
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity 
                         className="w-full bg-[#FB2355] py-4 rounded-lg mt-7"
                         onPress={submit}
                         disabled={isSubmitting}
