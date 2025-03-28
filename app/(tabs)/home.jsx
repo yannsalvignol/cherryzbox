@@ -1,4 +1,4 @@
-import { Text, View, FlatList, TouchableOpacity, Image, Keyboard, ScrollView, RefreshControl } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, Image, Keyboard, ScrollView, RefreshControl, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchInput from '../components/SearchInput';
@@ -6,6 +6,9 @@ import { useRouter } from 'expo-router';
 import { getAllPosts } from '../../lib/appwrite';
 import useAppwrite from '../../lib/useAppwrite';
 import PhotoCard from '../components/PhotoCard';
+
+const { width } = Dimensions.get('window');
+const cardWidth = (width - 48) / 2; // 2 cards per row with padding
 
 export default function Home() {
   const { data, isLoading, refetch } = useAppwrite(getAllPosts);
@@ -56,17 +59,17 @@ export default function Home() {
       <View className="flex-row justify-between items-center px-4 pt-2 pb-4">
         <Image 
           source={require('../../assets/images/cherry-icon.png')}
-          className="w-9 h-9"
+          className="w-12 h-12"
           resizeMode="contain"
         />
         
-        <Text className='text-2xl font-bold text-white font-["Urbanist-Bold"]'>
-          Cherrybox<Text className="text-[#FB2355]">.</Text>
+        <Text className='text-4xl font-bold text-white font-["questrial"]'>
+          Cherrizbox<Text className="text-[#FB2355]">.</Text>
         </Text>
         
         <TouchableOpacity 
           onPress={() => router.push('/(tabs)/profile')}
-          className="bg-[#FB2355] w-8 h-8 rounded-full items-center justify-center"
+          className="bg-[#FB2355] w-11 h-11 rounded-full items-center justify-center"
         >
           <Text className="text-white font-bold">P</Text>
         </TouchableOpacity>
@@ -88,21 +91,47 @@ export default function Home() {
           />
         }
       >
-        {/* Trending section - always visible when search is focused */}
+        {/* Trending section - only visible when search is focused */}
         {isSearchFocused && (
           <View className="px-4 mb-4">
             <Text className="text-white font-['Urbanist-Bold'] text-lg mb-3">Trending</Text>
             
-            <View className="flex-row flex-wrap">
-              {["Podcast", "Business", "Sports", "Music", "Beauty", 
-                "Mum", "Education", "Inspiration", "Fun", "Games"].map((topic, index) => (
-                <TouchableOpacity 
-                  key={index}
-                  className="bg-[#1A1A1A] py-2 px-4 rounded-full mr-2 mb-3"
-                >
-                  <Text className="text-white font-['Urbanist-Regular']">{topic}</Text>
-                </TouchableOpacity>
-              ))}
+            <View className="mb-3">
+              {/* First row */}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-2">
+                {["Music", "Gaming", "Sports", "Comedy", "Food", "Travel", "Fashion", "Tech"].map((topic, index) => (
+                  <TouchableOpacity 
+                    key={index}
+                    className="bg-[#1A1A1A] py-2 px-4 rounded-full mr-2"
+                  >
+                    <Text className="text-white font-['Urbanist-Regular']">{topic}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              
+              {/* Second row */}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-2">
+                {["Movies", "Fitness", "Art", "Science", "History", "Anime", "Photography", "DIY"].map((topic, index) => (
+                  <TouchableOpacity 
+                    key={index}
+                    className="bg-[#1A1A1A] py-2 px-4 rounded-full mr-2"
+                  >
+                    <Text className="text-white font-['Urbanist-Regular']">{topic}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              
+              {/* Third row */}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {["Health", "Nature", "Coding", "Writing", "Gossip", "Politics", "Space", "Animals", "Cars"].map((topic, index) => (
+                  <TouchableOpacity 
+                    key={index}
+                    className="bg-[#1A1A1A] py-2 px-4 rounded-full mr-2"
+                  >
+                    <Text className="text-white font-['Urbanist-Regular']">{topic}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
             </View>
           </View>
         )}
@@ -149,8 +178,13 @@ export default function Home() {
               ))}
             </View>
           ) : (
-            <View className="flex items-center justify-center py-8">
-              <Text className="text-white">No posts found.</Text>
+            <View>
+              <Text className="text-white mb-4">No posts found.</Text>
+              <View className="flex-row flex-wrap justify-between">
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
+              </View>
             </View>
           )}
         </View>

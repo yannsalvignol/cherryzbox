@@ -4,7 +4,13 @@ import React from 'react'
 const trendingTopics = [
   "Music", "Gaming", "Sports", "Comedy", 
   "Food", "Travel", "Fashion", "Tech", 
-  "Movies", "Fitness"
+  "Movies", "Fitness", "Art", "Science", 
+  "History", "Anime", "Photography", "DIY", 
+  "Health", "Nature", "Coding", "Writing", 
+  "Gossip", "Politics", "Space", "Animals", 
+  "Cars", "Art", "Science", "History", 
+  "Anime", "Photography", "DIY", 
+  "Health", "Nature", "Coding", "Writing",
 ];
 
 const Trending = () => {
