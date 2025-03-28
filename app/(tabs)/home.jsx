@@ -54,7 +54,7 @@ export default function Home() {
   };
   
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }} edges={['top']}>
       {/* Header with cherry icon, title, and profile button */}
       <View className="flex-row justify-between items-center px-4 pt-2 pb-4">
         <Image 
@@ -82,6 +82,8 @@ export default function Home() {
       
       {/* Content */}
       <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ paddingBottom: 100 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -137,7 +139,7 @@ export default function Home() {
         )}
         
         {/* Videos section */}
-        <View className="px-4 mb-4">
+        <View className="px-4 mb-4 pb-20">
           <Text className="text-white font-['Urbanist-Bold'] text-lg mb-3">
             {isSearchFocused ? 'Search Results' : 'For You'}
           </Text>
@@ -181,6 +183,11 @@ export default function Home() {
             <View>
               <Text className="text-white mb-4">No posts found.</Text>
               <View className="flex-row flex-wrap justify-between">
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
+                <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
                 <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
                 <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
                 <View style={{ width: cardWidth }} className="mb-3 h-56 bg-[#1A1A1A] rounded-lg" />
