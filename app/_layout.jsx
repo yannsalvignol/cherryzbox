@@ -33,7 +33,11 @@ export default function RootLayout() {
       <Stack 
         screenOptions={{ 
           headerShown: false,
-          animation: 'fade',
+          animation: 'slide_from_right',
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
+          animationDuration: 200,
+          presentation: 'card',
         }}
       >
         <Stack.Screen 
@@ -54,6 +58,54 @@ export default function RootLayout() {
           options={{
             headerShown: false,
             gestureEnabled: false
+          }}
+        />
+        <Stack.Screen 
+          name="about"
+          options={{
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal'
+          }}
+        />
+        <Stack.Screen 
+          name="privacy-policy"
+          options={{
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal'
+          }}
+        />
+        <Stack.Screen 
+          name="terms"
+          options={{
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal'
+          }}
+        />
+        <Stack.Screen 
+          name="settings"
+          options={{
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal'
+          }}
+        />
+        <Stack.Screen 
+          name="edit-profile"
+          options={{
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal'
+          }}
+        />
+        <Stack.Screen 
+          name="payment-methods"
+          options={{
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal'
           }}
         />
       </Stack>

@@ -1,20 +1,23 @@
-import { Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { Text, View, Image, TouchableOpacity, Pressable } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 
 export default function Profile() {
   const router = useRouter();
+  const [isPaidContent, setIsPaidContent] = useState(false);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }} edges={['top']}>
       {/* Header with cherry icon and title */}
       <View className="flex-row items-center px-4 pt-2 pb-4">
-        <Image 
-          source={require('../../assets/images/cherry-icon.png')}
-          className="w-9 h-9"
-          resizeMode="contain"
-        />
+        <TouchableOpacity onPress={() => router.push('/')}>
+          <Image 
+            source={require('../../assets/images/cherry-icon.png')}
+            className="w-9 h-9"
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
         
         <Text className='flex-1 text-center text-2xl font-bold text-white font-["questrial"]'>
           Cherrybox<Text className="text-[#FB2355]">.</Text>
@@ -60,12 +63,37 @@ export default function Profile() {
           >
             <Text className="text-white font-questrial">Add Payment Methods</Text>
           </TouchableOpacity>
+          
+          {/* Custom Content Type Toggle */}
+          <View className="w-full items-center">
+            <View className="flex-row bg-[#1A1A1A] rounded-full overflow-hidden relative p-1">
+              {/* Sliding pink background */}
+              <View 
+                className={`absolute w-1/2 h-full rounded-full bg-[#FB2355] top-1 ${
+                  isPaidContent ? 'right-1' : 'left-1'
+                }`}
+              />
+              
+              {/* Toggle options */}
+              <Pressable 
+                onPress={() => setIsPaidContent(false)}
+                className="flex-1 py-2 px-8 items-center z-10"
+              >
+                <Text className={`font-questrial ${!isPaidContent ? 'text-white' : 'text-gray-400'}`}>
+                  All content
+                </Text>
+              </Pressable>
+              <Pressable 
+                onPress={() => setIsPaidContent(true)}
+                className="flex-1 py-2 px-8 items-center z-10"
+              >
+                <Text className={`font-questrial ${isPaidContent ? 'text-white' : 'text-gray-400'}`}>
+                  Paid content
+                </Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
-      </View>
-
-      {/* Profile Content */}
-      <View className="flex-1 items-center justify-center">
-        <Text className="text-white font-questrial">Profile</Text>
       </View>
     </SafeAreaView>
   )
