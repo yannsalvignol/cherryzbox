@@ -119,7 +119,7 @@ export default function EditProfile() {
             >
               <Image 
                 source={require('../assets/icons/edit.png')}
-                className="w-6 h-6"
+                className="w-8 h-8"
                 resizeMode="contain"
               />
             </TouchableOpacity>
