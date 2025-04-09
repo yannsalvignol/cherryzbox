@@ -1,25 +1,57 @@
-import { Text, View, Image, TouchableOpacity, Switch } from 'react-native'
+import { Text, View, Image, TouchableOpacity, Switch, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
+import { logout } from '../lib/appwrite'
 
 export default function Settings() {
   const router = useRouter();
   const [pushNotifications, setPushNotifications] = useState(true);
 
-  const renderSettingItem = (title, onPress, hasSwitch = false) => (
+  const handleLogout = async () => {
+    try {
+      // Try to logout, but proceed regardless of result
+      await logout();
+      // First navigate to loading page
+      router.replace('/_loading');
+      // Then after a short delay, navigate to sign-up
+      setTimeout(() => {
+        router.replace('/sign-up');
+      }, 1000);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if there's an error, we should still navigate through loading
+      router.replace('/_loading');
+      setTimeout(() => {
+        router.replace('/sign-up');
+      }, 1000);
+    }
+  };
+
+  const handleChangePassword = () => {
+    router.push('/forgot-password');
+  };
+
+  const renderSettingItem = (title, onPress, hasSwitch = false, isLogout = false) => (
     <TouchableOpacity 
-      className="flex-row items-center justify-between py-4 border-b border-[#333333]"
+      className={`flex-row items-center justify-between py-4 ${!isLogout ? 'border-b border-[#333333]' : ''}`}
       onPress={onPress}
       disabled={hasSwitch}
     >
-      <Text className="text-white font-questrial text-base">{title}</Text>
+      <Text className={`font-questrial text-base ${isLogout ? 'text-[#FB2355]' : 'text-white'}`}>{title}</Text>
       {hasSwitch ? (
         <Switch
           value={pushNotifications}
           onValueChange={setPushNotifications}
           trackColor={{ false: '#333333', true: '#FB2355' }}
           thumbColor={'white'}
+        />
+      ) : isLogout ? (
+        <Image 
+          source={require('../assets/icons/logout.png')}
+          className="w-5 h-5"
+          resizeMode="contain"
+          style={{ tintColor: '#FB2355' }}
         />
       ) : (
         <Image 
@@ -53,9 +85,10 @@ export default function Settings() {
           <Text className="text-[#FB2355] font-questrial text-lg mb-2">Account Settings</Text>
           <View className="bg-[#1A1A1A] rounded-lg px-4">
             {renderSettingItem('Edit Profile', () => router.push('/edit-profile'))}
-            {renderSettingItem('Change Password', () => router.push('/change-password'))}
+            {renderSettingItem('Change Password', handleChangePassword)}
             {renderSettingItem('Add a payment method', () => router.push('/payment-methods'))}
             {renderSettingItem('Push Notifications', null, true)}
+            {renderSettingItem('Logout', handleLogout, false, true)}
           </View>
         </View>
 
