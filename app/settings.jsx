@@ -14,16 +14,16 @@ export default function Settings() {
       await logout();
       // First navigate to loading page
       router.replace('/_loading');
-      // Then after a short delay, navigate to sign-up
+      // Then after a short delay, navigate to sign-up in (auth) directory
       setTimeout(() => {
-        router.replace('/sign-up');
+        router.replace('/(auth)/sign-up');
       }, 1000);
     } catch (error) {
       console.error('Logout error:', error);
       // Even if there's an error, we should still navigate through loading
       router.replace('/_loading');
       setTimeout(() => {
-        router.replace('/sign-up');
+        router.replace('/(auth)/sign-up');
       }, 1000);
     }
   };

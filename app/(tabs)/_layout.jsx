@@ -11,8 +11,9 @@ export default function TabsLayout() {
         animation: 'fade',
       }}
     >
-      <Stack.Screen name="home" />
-      <Stack.Screen name="test" />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="create" />
+      <Stack.Screen name="bookmark" />
       <Stack.Screen name="profile" />
     </Stack>
   );
